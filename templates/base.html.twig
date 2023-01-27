@@ -24,6 +24,9 @@
             display: flex;
             justify-content: space-between;
             padding: 0 15px;
+            background-color: #F5F5F5;
+            box-shadow: 0 0 5px black;
+            margin-bottom: 20px;
         }
 
         header nav {
@@ -33,22 +36,22 @@
         .nav-link {
             margin: 0 5px;
             font-size: 18px;
+            display: flex;
+            align-items: center;
         }
     </style>
 </head>
 <body>
 <header>
-    <div>
+    <nav>
 
-        <a class="navbar-brand" href="{{ path('app_produit_index') }}">Device Delight</a>
+        <a class="navbar-brand" href="{{ path('app_produit_index') }}"><h1>Device Delight</h1></a>
         {% if is_granted('ROLE_ADMIN') %}
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('app_produit_index') }}">
-                    {{ 'header.admin'|trans }}
-                </a>
-            </li>
+            <a class="nav-link" href="{{ path('app_produit_index') }}">
+                {{ 'header.admin'|trans }}
+            </a>
         {% endif %}
-    </div>
+    </nav>
     <nav>
         {% if is_granted('ROLE_USER') %}
             <a class="nav-link" href="{{ path('app_panier_index') }}">
@@ -70,8 +73,15 @@
         {% endif %}
     </nav>
 </header>
-{% block body %}
+<div class="container">
+    {% for type, messages in app.flashes %}
+        {% for msg in messages %}
+            <p class="alert alert-{{type}}">{{msg}}</p>
+        {% endfor %}
+    {% endfor %}
+    {% block body %}
 
-{% endblock %}
+    {% endblock %}
+</div>
 </body>
 </html>

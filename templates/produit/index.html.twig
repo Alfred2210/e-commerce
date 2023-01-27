@@ -30,9 +30,6 @@
         <th>
           {{ 'table.picture'|trans }}
         </th>
-        <th>
-          {{ 'table.action'|trans }}
-        </th>
       </tr>
     </thead>
     <tbody>
@@ -43,7 +40,7 @@
           </td>
 
           <td>{{ produit.description }}</td>
-          <td>{{ produit.prix }}</td>
+          <td>{{ produit.prix }}€</td>
           <td>{{ produit.stock }}</td>
           <td>
             <img src="{{ asset('uploads/' ~ produit.photo) }}" alt="{{ produit.nom }}" />

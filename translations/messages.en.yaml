@@ -41,3 +41,11 @@ admin:
   edit: Edit
   remove: Remove
   new: Create
+
+flash:
+  new_prod: Product create with success!
+  edit_prod: Successful edit!
+  remove_prod: Removed!
+  add_to_card: Product add to card!
+  buy: Payed!
+  cant: Not authorized!

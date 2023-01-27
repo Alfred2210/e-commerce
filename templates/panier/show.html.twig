@@ -32,9 +32,9 @@
             {% set totalPrice = totalPrice + lignePrice %}
             <tr>
                 <td>{{ ligne.produit.nom }}</td>
-                <td>{{ ligne.produit.prix }}</td>
+                <td>{{ ligne.produit.prix }}€/u</td>
                 <td>{{ ligne.quantite }}</td>
-                <td>{{ (ligne.quantite * ligne.produit.prix) }}</td>
+                <td>{{ (ligne.quantite * ligne.produit.prix) }}€</td>
                 <td>
                     <a href="{{ path('app_panier_remove_line', {'id': ligne.id}) }}">Remove</a>
                 </td>

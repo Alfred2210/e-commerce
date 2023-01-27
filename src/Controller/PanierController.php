@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/panier')]
 class PanierController extends AbstractController
@@ -20,7 +21,7 @@ class PanierController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
         $user = $this->getUser();
-        if (in_array('ROLE_ADMIN', $user->getRoles())) {
+        if (in_array('ROLE_MODERATOR', $user->getRoles())) {
 
             return $this->render('panier/index.html.twig', [
                 'paniers' => $panierRepository->findAll(),
@@ -89,13 +90,15 @@ class PanierController extends AbstractController
     }
 
     #[Route('line/{id}', name: 'app_panier_remove_line')]
-    public function removeLigne(ContenuPanier $contenu, EntityManagerInterface $em, Request $r)
+    public function removeLigne(ContenuPanier $contenu, EntityManagerInterface $em, Request $r, TranslatorInterface $translator)
     {
         if ($contenu->getPanier()->getUser() !== $this->getUser()) {
-            $contenu = null;
+            $this->addFlash('warning', $translator->trans('flash.cant'));
         } else {
             $em->remove($contenu);
             $em->flush();
+            $this->addFlash('warning', $translator->trans('flash.remove_prod'));
+
             return $this->redirectToRoute('app_panier_index');
         }
     }
