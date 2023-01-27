@@ -1,0 +1,22 @@
+produit:
+  title: Produit
+  create: Create new Produit
+
+
+panier:
+
+
+user:
+
+
+header:
+
+
+table:
+  name: Name
+  desc: Description
+  price: Price
+  stock: Stock
+  picture: Picture
+  action: Action
+  no_record: No records found

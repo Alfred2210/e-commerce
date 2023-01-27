@@ -5,12 +5,11 @@
 {% endblock %}
 
 {% block body %}
-  <h1>Produit index</h1>
+  <h1>Produits</h1>
 
   <table class="table">
     <thead>
       <tr>
-        <th>Id</th>
         <th>Nom</th>
         <th>Description</th>
         <th>Prix</th>
@@ -22,7 +21,6 @@
     <tbody>
       {% for produit in produits %}
         <tr>
-          <td>{{ produit.id }}</td>
           <td>
             <a href="{{ path('app_produit_show', { id: produit.id }) }}">{{ produit.nom }}</a>
           </td>
@@ -30,7 +28,9 @@
           <td>{{ produit.description }}</td>
           <td>{{ produit.prix }}</td>
           <td>{{ produit.stock }}</td>
-          <td>{{ produit.photo }}</td>
+          <td>
+            <img src="{{asset('uploads/'~produit.photo)}}" alt="{{m.nom}}">
+
           {# <td>
             <a href="{{ path('app_produit_show', { id: produit.id }) }}">show</a>
           </td> #}
