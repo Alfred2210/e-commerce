@@ -1,27 +1,33 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello UserController!{% endblock %}
+{% block title %}
+  Hello UserController!
+{% endblock %}
 
 {% block body %}
-<div class="example-wrapper">
+  <div class="example-wrapper">
     <table class="table">
-        <tbody>
+      <tbody>
         <tr>
-            <th>Id</th>
-            <td>{{ user.nom }}</td>
+          <th>Id</th>
+          <td>{{ user.nom }}</td>
         </tr>
         <tr>
-            <th>Nom</th>
-            <td>{{ user.prenom }}</td>
+          <th>Nom</th>
+          <td>{{ user.prenom }}</td>
         </tr>
         <tr>
-            <th>Description</th>
-            <td>{{ user.email }}</td>
+          <th>Description</th>
+          <td>{{ user.email }}</td>
         </tr>
-        </tbody>
+      </tbody>
     </table>
 
-    {{ include('panier/_list.html.twig', {'paniers' : paniers}) }}
-
-</div>
+    {% if is_granted('ROLE_MODERATOR') %}
+      {% for i in user %}
+        <div>{{ i.id }}</div>
+      {% endfor %}
+    {% endif %}
+    {{ include('panier/_list.html.twig', { paniers: paniers }) }}
+  </div>
 {% endblock %}

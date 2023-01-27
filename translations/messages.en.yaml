@@ -8,13 +8,11 @@ panier:
   price_panner: Your cart is %nbr%€
   commander: Buy now
 
-
 user:
   title: User
   name: Name
   last_name: LastName
   email: Email
-
 
 header:
   login: LogIn
@@ -23,8 +21,7 @@ header:
   prod: Product
   panner: Cart
   user: User
-  admin: Admin
-
+  admin: Super Admin
 
 table:
   name: Name

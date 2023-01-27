@@ -43,6 +43,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotBlank]
     private ?string $prenom = null;
 
+
     public function __construct()
     {
         $this->paniers = new ArrayCollection();

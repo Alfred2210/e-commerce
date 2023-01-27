@@ -35,6 +35,10 @@ security:
     - { path: /admin, roles: ROLE_ADMIN }
     - { path: /user, roles: ROLE_USER }
 
+  role_hierarchy:
+    ROLE_USER: ROLE_USER
+    ROLE_ADMIN: [ROLE_USER]
+    ROLE_MODERATOR: [ROLE_ADMIN]
 when@test:
   security:
     password_hashers:

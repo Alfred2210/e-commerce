@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  {# {{ dump(test) }} #}
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Nom</th>
+        <th>Prenom</th>
+        <th>Mail</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in user %}
+        <tr>
+          <td>{{ i.id }}</td>
+          <td>{{ i.nom }}</td>
+          <td>{{ i.prenom }}</td>
+          <td>{{ i.email }}</td>
+        </tr>
+      {% else %}
+        <tr>
+          <td colspan="4">no records found</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

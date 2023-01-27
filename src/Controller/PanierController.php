@@ -28,9 +28,14 @@ class PanierController extends AbstractController
             ]);
         } else {
             $panier = $panierRepository->findOneBy(['user' => $user, 'etat' => false]);
-            return $this->render('panier/show.html.twig', [
-                'panier' => $panier,
-            ]);
+
+            if ($panier) {
+                return $this->render('panier/show.html.twig', [
+                    'panier' => $panier,
+                ]);
+            }
+
+            return $this->redirectToRoute('app_panier_index');
         }
     }
 
