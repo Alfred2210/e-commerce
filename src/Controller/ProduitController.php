@@ -65,43 +65,48 @@ class ProduitController extends AbstractController
     }
 
     #[Route('/produit/{id}', name: 'app_produit_show')]
-    public function show(Produit $produit, EntityManagerInterface $em, Request $r, TranslatorInterface $translator): Response
+    public function show(Produit $produit = null, EntityManagerInterface $em, Request $r, TranslatorInterface $translator): Response
     {
-        $user = $this->getUser();
-        if ($user) {
+        if ($produit === null) {
+            $this->addFlash('warning', $translator->trans('flash.cant'));
+            return $this->redirectToRoute('app_produit_index');
+        } else {
+            $user = $this->getUser();
+            if ($user) {
 
-            $panner = $em->getRepository(Panier::class)->findOneBy(['user' => $user, 'etat' => false]);
-            if (!$panner) {
-                $panner = new Panier();
-                $panner->setUser($user);
-                $panner->setDate(new \DateTime());
-                $panner->setEtat(false);
-                $em->persist($panner);
-                $em->flush();
-            }
-            $list = $em->getRepository(ContenuPanier::class)->findOneBy(['panier' => $panner, 'produit' => $produit]);
-            if (!$list) {
-                $list = new ContenuPanier();
-                $list->setDate(new \DateTime())
-                    ->setPanier($panner)
-                    ->setProduit($produit);
-            }
-            $form = $this->createForm(ContenueType::class, $list);
-            $form->handleRequest($r);
-            if ($form->isSubmitted() && $form->isValid()) {
-                $em->persist($list);
-                $em->flush();
-                $this->addFlash('success', $translator->trans('flash.add_to_card'));
-            }
+                $panner = $em->getRepository(Panier::class)->findOneBy(['user' => $user, 'etat' => false]);
+                if (!$panner) {
+                    $panner = new Panier();
+                    $panner->setUser($user);
+                    $panner->setDate(new \DateTime());
+                    $panner->setEtat(false);
+                    $em->persist($panner);
+                    $em->flush();
+                }
+                $list = $em->getRepository(ContenuPanier::class)->findOneBy(['panier' => $panner, 'produit' => $produit]);
+                if (!$list) {
+                    $list = new ContenuPanier();
+                    $list->setDate(new \DateTime())
+                        ->setPanier($panner)
+                        ->setProduit($produit);
+                }
+                $form = $this->createForm(ContenueType::class, $list);
+                $form->handleRequest($r);
+                if ($form->isSubmitted() && $form->isValid()) {
+                    $em->persist($list);
+                    $em->flush();
+                    $this->addFlash('success', $translator->trans('flash.add_to_card'));
+                }
 
+                return $this->render('produit/show.html.twig', [
+                    'produit' => $produit,
+                    'form' => $form,
+                ]);
+            }
             return $this->render('produit/show.html.twig', [
                 'produit' => $produit,
-                'form' => $form->createView(),
             ]);
         }
-        return $this->render('produit/show.html.twig', [
-            'produit' => $produit,
-        ]);
     }
 
     #[Route('/produit/admin/{id}/edit', name: 'app_produit_edit', methods: ['GET', 'POST'])]
@@ -113,7 +118,7 @@ class ProduitController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $logo = $form->get('photo')->getData();
             if ($logo) {
-            unlink($this->getParameter('upload_dir').'/'.$produit->getPhoto());
+                unlink($this->getParameter('upload_dir') . '/' . $produit->getPhoto());
                 $newFilename = uniqid() . '.' . $logo->guessExtension();
 
                 try {
@@ -145,7 +150,7 @@ class ProduitController extends AbstractController
     public function delete(Request $request, Produit $produit, ProduitRepository $produitRepository, TranslatorInterface $translator): Response
     {
         if ($this->isCsrfTokenValid('delete' . $produit->getId(), $request->request->get('_token'))) {
-            unlink($this->getParameter('upload_dir').'/'.$produit->getPhoto());
+            unlink($this->getParameter('upload_dir') . '/' . $produit->getPhoto());
             $produitRepository->remove($produit, true);
         }
         $this->addFlash('warning', $translator->trans('flash.remove_prod'));

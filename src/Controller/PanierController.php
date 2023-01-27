@@ -17,7 +17,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class PanierController extends AbstractController
 {
     #[Route('/', name: 'app_panier_index', methods: ['GET'])]
-    public function index(PanierRepository $panierRepository): Response
+    public function index(PanierRepository $panierRepository, EntityManagerInterface $em): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
         $user = $this->getUser();
@@ -28,6 +28,7 @@ class PanierController extends AbstractController
             ]);
         } else {
             $panier = $panierRepository->findOneBy(['user' => $user, 'etat' => false]);
+<<<<<<< HEAD
 
             if ($panier) {
                 return $this->render('panier/show.html.twig', [
@@ -36,6 +37,19 @@ class PanierController extends AbstractController
             }
 
             return $this->redirectToRoute('app_panier_index');
+=======
+            if (!$panier) {
+                $panier = new Panier();
+                $panier->setUser($this->getUser())
+                    ->setEtat(false)
+                    ->setDate(new \DateTime());
+                $em->persist($panier);
+                $em->flush();
+            }
+            return $this->render('panier/show.html.twig', [
+                'panier' => $panier,
+            ]);
+>>>>>>> b1b9c3593eed838eaea3da5e4ff5dc4c723639fb
         }
     }
 
@@ -59,11 +73,20 @@ class PanierController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_panier_show', methods: ['GET'])]
-    public function show(Panier $panier): Response
+    public function show(Panier $panier, TranslatorInterface $translator): Response
     {
-        return $this->render('panier/show.html.twig', [
-            'panier' => $panier,
-        ]);
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
+        $user = $this->getUser();
+        if ($user === $panier->getUser() || in_array('ROLE_MODERATOR', $user->getRoles())) {
+            return $this->render('panier/show.html.twig', [
+                'panier' => $panier,
+            ]);
+        }
+        else{
+            $this->addFlash('warning', $translator->trans('flash.cant'));
+            return $this->redirectToRoute('app_produit_index');
+        }
     }
 
     #[Route('{id}/edit', name: 'app_panier_edit', methods: ['GET', 'POST'])]
@@ -99,6 +122,7 @@ class PanierController extends AbstractController
     {
         if ($contenu->getPanier()->getUser() !== $this->getUser()) {
             $this->addFlash('warning', $translator->trans('flash.cant'));
+            return $this->redirectToRoute('app_panier_show', ['id' => $contenu->getPanier()->getId()]);
         } else {
             $em->remove($contenu);
             $em->flush();
@@ -109,14 +133,17 @@ class PanierController extends AbstractController
     }
 
     #[Route('valid/{id}', name: 'app_panier_valid')]
-    public function validPanier(Panier $panner, EntityManagerInterface $em, Request $r)
+    public function validPanier(Panier $panner, EntityManagerInterface $em, Request $r, TranslatorInterface $translator)
     {
         if ($panner->getUser() !== $this->getUser()) {
-            return $this->redirectToRoute('app_panier_index');
+            $this->addFlash('warning', $translator->trans('flash.cant'));
+            return $this->redirectToRoute('app_panier_show', ['id' => $panner->getId()]);
         } else {
             $panner->setEtat(true);
             $em->persist($panner);
             $em->flush();
+            $this->addFlash('success', $translator->trans('flash.buy'));
+
             return $this->redirectToRoute('app_produit_index');
         }
     }

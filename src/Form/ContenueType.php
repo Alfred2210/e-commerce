@@ -13,9 +13,7 @@ class ContenueType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('quantite')
-            ->add('Ajouter', SubmitType::class)
-        ;
+            ->add('quantite');
     }
 
     public function configureOptions(OptionsResolver $resolver): void
