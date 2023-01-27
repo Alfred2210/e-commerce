@@ -28,16 +28,6 @@ class PanierController extends AbstractController
             ]);
         } else {
             $panier = $panierRepository->findOneBy(['user' => $user, 'etat' => false]);
-<<<<<<< HEAD
-
-            if ($panier) {
-                return $this->render('panier/show.html.twig', [
-                    'panier' => $panier,
-                ]);
-            }
-
-            return $this->redirectToRoute('app_panier_index');
-=======
             if (!$panier) {
                 $panier = new Panier();
                 $panier->setUser($this->getUser())
@@ -49,7 +39,6 @@ class PanierController extends AbstractController
             return $this->render('panier/show.html.twig', [
                 'panier' => $panier,
             ]);
->>>>>>> b1b9c3593eed838eaea3da5e4ff5dc4c723639fb
         }
     }
 
@@ -82,8 +71,7 @@ class PanierController extends AbstractController
             return $this->render('panier/show.html.twig', [
                 'panier' => $panier,
             ]);
-        }
-        else{
+        } else {
             $this->addFlash('warning', $translator->trans('flash.cant'));
             return $this->redirectToRoute('app_produit_index');
         }
