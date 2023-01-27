@@ -1,59 +1,80 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-{{ 'produit.title'|trans }}
+    {{ 'produit.title'|trans }}
 {% endblock %}
 
 {% block body %}
-  <style>
-    img {
-      max-width: 150px;
-    }
-  </style>
-  <h1>{{ produit.nom }}</h1>
-  <div class="full-width row">
-    <div class="col"></div>
-  </div>
+    <style>
+        td img {
+            max-width: 150px;
+        }
 
-  <table class="table">
-    <tbody>
-      <tr>
-        <th>Id</th>
-        <td>{{ produit.id }}</td>
-      </tr>
-      <tr>
-        <th>Nom</th>
-        <td>{{ produit.nom }}</td>
-      </tr>
-      <tr>
-        <th>Description</th>
-        <td>{{ produit.description }}</td>
-      </tr>
-      <tr>
-        <th>Prix</th>
-        <td>{{ produit.prix }}</td>
-      </tr>
-      <tr>
-        <th>Stock</th>
-        <td>{{ produit.stock }}</td>
-      </tr>
-      <tr>
-        <th>Photo</th>
-        <td>
-          <img src="{{ asset('uploads/' ~ produit.photo) }}" alt="{{ produit.nom }}" />
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  {% if is_granted('ROLE_USER') %}
-    {{ form(form) }}
-  {% endif %}
+        .img_div {
+            display: flex;
+            justify-content: center;
+            padding: 25px 0;
+        }
 
-  {% if is_granted('ROLE_ADMIN') %}
-    <a href="{{ path('app_produit_index') }}">back to list</a>
+        .img_div img {
+            max-width: 80%;
+            max-height: 75vh;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 1px 1px 2px black;
+        }
 
-    <a href="{{ path('app_produit_edit', { id: produit.id }) }}" class="btn btn-warning">edit</a>
+        .infoProd {
+            position: relative;
+            max-height: 75vh;
+        }
 
-    {{ include('produit/_delete_form.html.twig') }}
-  {% endif %}
+        .infoProd p {
+            max-height: 70%;
+            overflow-y: scroll;
+        }
+
+        .info_prod {
+            bottom: 5px;
+            left: 0;
+            right: 0;
+            width: 100%;
+        }
+    </style>
+    {#  <h1>{{ produit.nom }}</h1> #}
+    <div class="full-width row">
+        <div class="col-8 img_div">
+            <img src="{{ asset('uploads/' ~ produit.photo) }}" alt="{{ produit.nom }}"/>
+        </div>
+        <div class="col-4 infoProd">
+            <h2>{{ produit.nom }}</h2>
+            <p>
+                {{ produit.description }}
+            </p>
+            <div class="info_prod">
+                <div class="row">
+                    <p class="col-6">
+                        {{ 'table.unit_price'|trans }} : {{ produit.prix }}€
+                    </p>
+                    <p class="col-6">
+                        {{ 'table.stock'|trans }} : {{ produit.stock }}
+                    </p>
+                </div>
+                <div>
+                    {{ include('produit/_add_to_card.html.twig') }}
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    {% if is_granted('ROLE_MODERATOR') %}
+        <div class="admin_btn_edit">
+            <a href="{{ path('app_produit_edit', { id: produit.id }) }}"
+               class="btn btn-primary">{{ 'admin.edit'|trans }}</a>
+            <a href="{{ path('app_produit_delete', { id: produit.id }) }}"
+               class="btn btn-danger">{{ 'admin.remove'|trans }}</a>
+        </div>
+    {% endif %}
 {% endblock %}

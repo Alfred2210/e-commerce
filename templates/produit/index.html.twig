@@ -6,8 +6,8 @@
 
 {% block body %}
   <style>
-    img {
-      width: 150px;
+    td img {
+      width: 75px;
     }
   </style>
   <h1>{{ 'produit.title'|trans }}</h1>
@@ -45,10 +45,6 @@
           <td>
             <img src="{{ asset('uploads/' ~ produit.photo) }}" alt="{{ produit.nom }}" />
           </td>
-
-          {# <td>
-            <a href="{{ path('app_produit_show', { id: produit.id }) }}">show</a>
-          </td> #}
         </tr>
       {% else %}
         <tr>

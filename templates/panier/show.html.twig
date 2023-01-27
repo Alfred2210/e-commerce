@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{  'panier.title'|trans }}{% endblock %}
+{% block title %}{{ 'panier.title'|trans }}{% endblock %}
 
 {% block body %}
-    <h1>{{  'panier.title'|trans }}</h1>
+    <h1>{{ 'panier.title'|trans }}</h1>
 
     <table class="table">
         <thead>
@@ -50,5 +50,9 @@
     <h3>
         {{ 'panier.price_panner'|trans({'%nbr%' : totalPrice}) }}
     </h3>
-    <a href="{{ path('app_panier_valid', {'id' : panier.id}) }}" class="btn btn-primary">{{ 'panier.commander'|trans }}</a>
+    {% if panier.etat == false %}
+
+        <a href="{{ path('app_panier_valid', {'id' : panier.id}) }}"
+           class="btn btn-primary">{{ 'panier.commander'|trans }}</a>
+    {% endif %}
 {% endblock %}

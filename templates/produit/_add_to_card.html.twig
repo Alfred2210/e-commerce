@@ -1,0 +1,17 @@
+<style>
+    .addtoCarrdItem {
+        display: flex;
+        align-items: end;
+    }
+    .addtoCarrdItem .submitBtnAction {
+        max-height: 40px !important;
+        margin-bottom: 16px;
+        margin-left: 15px;
+    }
+</style>
+{{ form_start(form) }}
+<div class="d-flex addtoCarrdItem">
+    {{ form_widget(form) }}
+    <button class="btn btn-primary submitBtnAction">{{ button_label|default('Save') }}</button>
+</div>
+{{ form_end(form) }}
