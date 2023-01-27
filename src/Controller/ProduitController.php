@@ -65,7 +65,7 @@ class ProduitController extends AbstractController
         ]);
     }
 
-    #[Route('/produit/{id}', name: 'app_produit_show', methods: ['GET'])]
+    #[Route('/produit/{id}', name: 'app_produit_show')]
     public function show(Produit $produit, EntityManagerInterface $em, Request $r): Response
     {
         $user = $this->getUser();
