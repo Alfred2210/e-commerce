@@ -2,10 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\ContenuPanier;
+use App\Entity\Panier;
 use App\Entity\Produit;
+use App\Form\ContenueType;
 use App\Form\ProduitType;
 use App\Repository\ProduitRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Tests\Common\Annotations\Fixtures\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -31,8 +37,25 @@ class ProduitController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $produitRepository->save($produit, true);
 
+            $logo = $form->get('photo')->getData();
+            if ($logo) {
+                $newFilename = uniqid() . '.' . $logo->guessExtension();
+
+                try {
+                    $logo->move(
+                        $this->getParameter('upload_dir'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    $this->addFlash('danger', $e->getMessage());
+                    return $this->redirectToRoute('app_marque');
+                }
+
+                $produit->setPhoto($newFilename);
+            }
+
+            $produitRepository->save($produit, true);
             return $this->redirectToRoute('app_produit_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -42,9 +65,40 @@ class ProduitController extends AbstractController
         ]);
     }
 
-    #[Route('produit/{id}', name: 'app_produit_show', methods: ['GET'])]
-    public function show(Produit $produit): Response
+    #[Route('/produit/{id}', name: 'app_produit_show', methods: ['GET'])]
+    public function show(Produit $produit, EntityManagerInterface $em, Request $r): Response
     {
+        $user = $this->getUser();
+        if ($user) {
+
+            $panner = $em->getRepository(Panier::class)->findOneBy(['user' => $user, 'etat' => false]);
+            if (!$panner) {
+                $panner = new Panier();
+                $panner->setUser($user);
+                $panner->setDate(new \DateTime());
+                $panner->setEtat(false);
+                $em->persist($panner);
+                $em->flush();
+            }
+            $list = $em->getRepository(ContenuPanier::class)->findOneBy(['panier' => $panner, 'produit' => $produit]);
+            if (!$list) {
+                $list = new ContenuPanier();
+                $list->setDate(new \DateTime())
+                    ->setPanier($panner)
+                    ->setProduit($produit);
+            }
+            $form = $this->createForm(ContenueType::class, $list);
+            $form->handleRequest($r);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em->persist($list);
+                $em->flush();
+            }
+
+            return $this->render('produit/show.html.twig', [
+                'produit' => $produit,
+                'form' => $form->createView(),
+            ]);
+        }
         return $this->render('produit/show.html.twig', [
             'produit' => $produit,
         ]);
@@ -68,7 +122,7 @@ class ProduitController extends AbstractController
         ]);
     }
 
-    #[Route('produit/{id}', name: 'app_produit_delete', methods: ['POST'])]
+    #[Route('/produit/delete/{id}', name: 'app_produit_delete', methods: ['POST'])]
     public function delete(Request $request, Produit $produit, ProduitRepository $produitRepository): Response
     {
         if ($this->isCsrfTokenValid('delete' . $produit->getId(), $request->request->get('_token'))) {
@@ -76,5 +130,25 @@ class ProduitController extends AbstractController
         }
 
         return $this->redirectToRoute('app_produit_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/{qt}/topanner', name: 'app_produit_to_panner')]
+    public function addProduct(Produit $prod, EntityManagerInterface $em, Request $r)
+    {
+        $user = $this->getUser();
+        $panner = $em->getRepository(Panier::class)->findOneBy(['user' => $user, 'etat' => false]);
+        if (!$panner) {
+            $panner = new Panier();
+            $panner->setUser($user);
+            $panner->setDate(new \DateTime());
+            $panner->setEtat(false);
+            $em->persist($panner);
+            $em->flush();
+        }
+
+
+        return $this->render('dump.html.twig', [
+            'test' => $r->query->get('gt'),
+        ]);
     }
 }

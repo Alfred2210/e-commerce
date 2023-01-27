@@ -6,6 +6,8 @@ use App\Entity\Produit;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Validator\Constraints\File;
 
 class ProduitType extends AbstractType
 {
@@ -16,8 +18,22 @@ class ProduitType extends AbstractType
             ->add('description')
             ->add('prix')
             ->add('stock')
-            ->add('photo')
-        ;
+            ->add('photo', FileType::class, [
+                'label' => 'Image (jpg, jpeg, png)',
+                'mapped' => false,
+                'required' => true,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '10024k',
+                        'mimeTypes' => [
+                            'image/jpg',
+                            'image/jpeg',
+                            'image/png',
+                        ],
+                        'mimeTypesMessage' => 'Seuls les jpg, jpeg et png sont autorisés',
+                    ])
+                ],
+            ])        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

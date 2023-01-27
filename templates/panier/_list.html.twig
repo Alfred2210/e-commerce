@@ -1,0 +1,27 @@
+<table class="table">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Date</th>
+        <th>Etat</th>
+        <th>actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for panier in paniers %}
+        <tr>
+            <td>{{ panier.id }}</td>
+            <td>{{ panier.date ? panier.date|date('Y-m-d H:i:s') : '' }}</td>
+            <td>{{ panier.etat ? 'Yes' : 'No' }}</td>
+            <td>
+                <a href="{{ path('app_panier_show', {'id': panier.id}) }}">show</a>
+                <a href="{{ path('app_panier_edit', {'id': panier.id}) }}">edit</a>
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="4">no records found</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

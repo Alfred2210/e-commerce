@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserController!{% endblock %}
+
+{% block body %}
+<div class="example-wrapper">
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>Id</th>
+            <td>{{ user.nom }}</td>
+        </tr>
+        <tr>
+            <th>Nom</th>
+            <td>{{ user.prenom }}</td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td>{{ user.email }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    {{ include('panier/_list.html.twig', {'paniers' : paniers}) }}
+
+</div>
+{% endblock %}
