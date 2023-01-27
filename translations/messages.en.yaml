@@ -1,16 +1,12 @@
 produit:
-  title: Produit
-  create: Create new Produit
-
+  title: Product
+  create: Create new Product
 
 panier:
 
-
 user:
 
-
 header:
-
 
 table:
   name: Name

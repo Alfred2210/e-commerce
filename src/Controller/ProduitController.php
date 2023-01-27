@@ -29,7 +29,7 @@ class ProduitController extends AbstractController
         ]);
     }
 
-    #[Route('/produit/new', name: 'app_produit_new', methods: ['GET', 'POST'])]
+    #[Route('/produit/admin/new', name: 'app_produit_new', methods: ['GET', 'POST'])]
     public function new(Request $request, ProduitRepository $produitRepository): Response
     {
         $produit = new Produit();
@@ -104,7 +104,7 @@ class ProduitController extends AbstractController
         ]);
     }
 
-    #[Route('produit/{id}/edit', name: 'app_produit_edit', methods: ['GET', 'POST'])]
+    #[Route('/produit/admin/{id}/edit', name: 'app_produit_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Produit $produit, ProduitRepository $produitRepository): Response
     {
         $form = $this->createForm(ProduitType::class, $produit);
@@ -122,7 +122,7 @@ class ProduitController extends AbstractController
         ]);
     }
 
-    #[Route('/produit/delete/{id}', name: 'app_produit_delete', methods: ['POST'])]
+    #[Route('/produit/admin/delete/{id}', name: 'app_produit_delete', methods: ['POST'])]
     public function delete(Request $request, Produit $produit, ProduitRepository $produitRepository): Response
     {
         if ($this->isCsrfTokenValid('delete' . $produit->getId(), $request->request->get('_token'))) {
@@ -132,23 +132,23 @@ class ProduitController extends AbstractController
         return $this->redirectToRoute('app_produit_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/{id}/{qt}/topanner', name: 'app_produit_to_panner')]
-    public function addProduct(Produit $prod, EntityManagerInterface $em, Request $r)
-    {
-        $user = $this->getUser();
-        $panner = $em->getRepository(Panier::class)->findOneBy(['user' => $user, 'etat' => false]);
-        if (!$panner) {
-            $panner = new Panier();
-            $panner->setUser($user);
-            $panner->setDate(new \DateTime());
-            $panner->setEtat(false);
-            $em->persist($panner);
-            $em->flush();
-        }
+    // #[Route('/{id}/{qt}/topanner', name: 'app_produit_to_panner')]
+    // public function addProduct(Produit $prod, EntityManagerInterface $em, Request $r)
+    // {
+    //     $user = $this->getUser();
+    //     $panner = $em->getRepository(Panier::class)->findOneBy(['user' => $user, 'etat' => false]);
+    //     if (!$panner) {
+    //         $panner = new Panier();
+    //         $panner->setUser($user);
+    //         $panner->setDate(new \DateTime());
+    //         $panner->setEtat(false);
+    //         $em->persist($panner);
+    //         $em->flush();
+    //     }
 
 
-        return $this->render('dump.html.twig', [
-            'test' => $r->query->get('gt'),
-        ]);
-    }
+    //     return $this->render('dump.html.twig', [
+    //         'test' => $r->query->get('gt'),
+    //     ]);
+    // }
 }
