@@ -1,35 +1,28 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Panier{% endblock %}
+{% block title %}{{  'panier.title'|trans }}{% endblock %}
 
 {% block body %}
-    <h1>Panier</h1>
-
-    <table class="table">
-        <tbody>
-        <tr>
-            <th>Id</th>
-            <td>{{ panier.id }}</td>
-        </tr>
-        <tr>
-            <th>Date</th>
-            <td>{{ panier.date ? panier.date|date('Y-m-d H:i:s') : '' }}</td>
-        </tr>
-        <tr>
-            <th>Etat</th>
-            <td>{{ panier.etat ? 'Yes' : 'No' }}</td>
-        </tr>
-        </tbody>
-    </table>
+    <h1>{{  'panier.title'|trans }}</h1>
 
     <table class="table">
         <thead>
         <tr>
-            <th>Produit</th>
-            <th>Prix/u</th>
-            <th>Quantité</th>
-            <th>Prix</th>
-            <th>actions</th>
+            <th>
+                {{ 'table.name'|trans }}
+            </th>
+            <th>
+                {{ 'table.price'|trans }}
+            </th>
+            <th>
+                {{ 'table.quantity'|trans }}
+            </th>
+            <th>
+                {{ 'table.unit_price'|trans }}
+            </th>
+            <th>
+                {{ 'table.action'|trans }}
+            </th>
         </tr>
         </thead>
         <tbody>
@@ -54,12 +47,8 @@
         </tbody>
     </table>
 
-    <h3>{{ totalPrice }}</h3>
-    <a href="{{ path('app_panier_valid', {'id' : panier.id}) }}" class="btn btn-primary">Commander</a>
-
-    <a href="{{ path('app_panier_index') }}">back to list</a>
-
-    <a href="{{ path('app_panier_edit', {'id': panier.id}) }}">edit</a>
-
-    {{ include('panier/_delete_form.html.twig') }}
+    <h3>
+        {{ 'panier.price_panner'|trans({'%nbr%' : totalPrice}) }}
+    </h3>
+    <a href="{{ path('app_panier_valid', {'id' : panier.id}) }}" class="btn btn-primary">{{ 'panier.commander'|trans }}</a>
 {% endblock %}

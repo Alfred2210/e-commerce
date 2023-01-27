@@ -1,18 +1,43 @@
 produit:
   title: Product
-  create: Create new Product
+  create: Create new Produit
+  add_to_panner: Add to cart
 
 panier:
+  title: Cart
+  price_panner: Your cart is %nbr%€
+  commander: Buy now
+
 
 user:
+  title: User
+  name: Name
+  last_name: LastName
+  email: Email
+
 
 header:
+  login: LogIn
+  logout: LogOut
+  register: Register
+  prod: Product
+  panner: Cart
+  user: User
+  admin: Admin
+
 
 table:
   name: Name
   desc: Description
   price: Price
+  unit_price: Price/unit
+  quantity: Quantity
   stock: Stock
   picture: Picture
   action: Action
   no_record: No records found
+
+admin:
+  edit: Edit
+  remove: Remove
+  new: Create
