@@ -1,0 +1,48 @@
+produit:
+  title: Produit
+  create: Produit crée
+  add_to_panner: ajouter au panier
+
+panier:
+  title: Panier
+  price_panner: Le prix du panier %nbr%€
+  commander: Commander
+
+user:
+  title: Utilisateur
+  name: Prenom
+  last_name: Nom
+  email: Email
+
+header:
+  login: LogIn
+  logout: LogOut
+  register: Inscription
+  prod: Produit
+  panner: Panier
+  user: Utilisateur
+  admin: Super Admin
+
+table:
+  name: Nom
+  desc: Description
+  price: Prix
+  unit_price: Unité
+  quantity: Quantité
+  stock: Stock
+  picture: Photo
+  action: Action
+  no_record: non enregistrée
+
+admin:
+  edit: Edit
+  remove: Supprimer
+  new: Creation
+
+flash:
+  new_prod: Crée avec succès
+  edit_prod: Successful edit!
+  remove_prod: Supprimer!
+  add_to_card: ajout dans le panier!
+  buy: Payer !
+  cant: Non Autorise !
