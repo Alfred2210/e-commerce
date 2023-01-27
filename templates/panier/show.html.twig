@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Panier{% endblock %}
+
+{% block body %}
+    <h1>Panier</h1>
+
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>Id</th>
+            <td>{{ panier.id }}</td>
+        </tr>
+        <tr>
+            <th>Date</th>
+            <td>{{ panier.date ? panier.date|date('Y-m-d H:i:s') : '' }}</td>
+        </tr>
+        <tr>
+            <th>Etat</th>
+            <td>{{ panier.etat ? 'Yes' : 'No' }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Produit</th>
+            <th>Prix/u</th>
+            <th>Quantité</th>
+            <th>Prix</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% set totalPrice = 0 %}
+        {% for ligne in panier.contenuPaniers %}
+            {% set lignePrice = (ligne.quantite * ligne.produit.prix) %}
+            {% set totalPrice = totalPrice + lignePrice %}
+            <tr>
+                <td>{{ ligne.produit.nom }}</td>
+                <td>{{ ligne.produit.prix }}</td>
+                <td>{{ ligne.quantite }}</td>
+                <td>{{ (ligne.quantite * ligne.produit.prix) }}</td>
+                <td>
+                    <a href="{{ path('app_panier_remove_line', {'id': ligne.id}) }}">Remove</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>{{ totalPrice }}</h3>
+    <a href="{{ path('app_panier_valid', {'id' : panier.id}) }}" class="btn btn-primary">Commander</a>
+
+    <a href="{{ path('app_panier_index') }}">back to list</a>
+
+    <a href="{{ path('app_panier_edit', {'id': panier.id}) }}">edit</a>
+
+    {{ include('panier/_delete_form.html.twig') }}
+{% endblock %}
