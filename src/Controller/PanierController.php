@@ -18,6 +18,7 @@ class PanierController extends AbstractController
     #[Route('/', name: 'app_panier_index', methods: ['GET'])]
     public function index(PanierRepository $panierRepository): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
         $user = $this->getUser();
         if (in_array('ROLE_ADMIN', $user->getRoles())) {
 
@@ -59,7 +60,7 @@ class PanierController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_panier_edit', methods: ['GET', 'POST'])]
+    #[Route('{id}/edit', name: 'app_panier_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Panier $panier, PanierRepository $panierRepository): Response
     {
         $form = $this->createForm(PanierType::class, $panier);
@@ -92,8 +93,7 @@ class PanierController extends AbstractController
     {
         if ($contenu->getPanier()->getUser() !== $this->getUser()) {
             $contenu = null;
-        }
-        else{
+        } else {
             $em->remove($contenu);
             $em->flush();
             return $this->redirectToRoute('app_panier_index');
@@ -105,13 +105,11 @@ class PanierController extends AbstractController
     {
         if ($panner->getUser() !== $this->getUser()) {
             return $this->redirectToRoute('app_panier_index');
-        }
-        else{
+        } else {
             $panner->setEtat(true);
             $em->persist($panner);
             $em->flush();
             return $this->redirectToRoute('app_produit_index');
         }
     }
-
 }
