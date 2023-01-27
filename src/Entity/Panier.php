@@ -21,6 +21,7 @@ class Panier
     private ?User $user = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?\DateTimeInterface $date = null;
 
     #[ORM\Column]

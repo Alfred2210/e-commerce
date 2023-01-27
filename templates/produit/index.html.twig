@@ -1,21 +1,38 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-  Produit index
+{{ 'produit.title'|trans }}
 {% endblock %}
 
 {% block body %}
-  <h1>Produits</h1>
+  <style>
+    img {
+      width: 150px;
+    }
+  </style>
+  <h1>{{ 'produit.title'|trans }}</h1>
 
   <table class="table">
     <thead>
       <tr>
-        <th>Nom</th>
-        <th>Description</th>
-        <th>Prix</th>
-        <th>Stock</th>
-        <th>Photo</th>
-        <th>actions</th>
+        <th>
+          {{ 'table.name'|trans }}
+        </th>
+        <th>
+          {{ 'table.desc'|trans }}
+        </th>
+        <th>
+          {{ 'table.price'|trans }}
+        </th>
+        <th>
+          {{ 'table.stock'|trans }}
+        </th>
+        <th>
+          {{ 'table.picture'|trans }}
+        </th>
+        <th>
+          {{ 'table.action'|trans }}
+        </th>
       </tr>
     </thead>
     <tbody>
@@ -29,7 +46,7 @@
           <td>{{ produit.prix }}</td>
           <td>{{ produit.stock }}</td>
           <td>
-            <img src="{{asset('uploads/'~produit.photo)}}" alt="{{m.nom}}">
+            <img src="{{asset('uploads/'~produit.photo)}}" alt="{{produit.nom}}">
 
           {# <td>
             <a href="{{ path('app_produit_show', { id: produit.id }) }}">show</a>
@@ -37,7 +54,9 @@
         </tr>
       {% else %}
         <tr>
-          <td colspan="7">no records found</td>
+          <td colspan="7">
+            {{ 'table.no_record'|trans }}
+          </td>
         </tr>
       {% endfor %}
     </tbody>

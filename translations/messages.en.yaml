@@ -1,7 +1,7 @@
 produit:
   title: Produit
   create: Create new Produit
-
+  add_to_panner: Add to panner
 
 panier:
 
@@ -10,6 +10,13 @@ user:
 
 
 header:
+  login: LogIn
+  logout: LogOut
+  register: Register
+  prod: Produits
+  panner: Panner
+  user: User
+  admin: Admin
 
 
 table:
@@ -20,3 +27,8 @@ table:
   picture: Picture
   action: Action
   no_record: No records found
+
+admin:
+  edit: Edit
+  remove: Remove
+  new: Create
