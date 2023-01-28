@@ -55,7 +55,7 @@ class PanierController extends AbstractController
             return $this->redirectToRoute('app_panier_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('panier/new.html.twig', [
+        return $this->render('panier/new.html.twig', [
             'panier' => $panier,
             'form' => $form,
         ]);
@@ -89,7 +89,7 @@ class PanierController extends AbstractController
             return $this->redirectToRoute('app_panier_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('panier/edit.html.twig', [
+        return $this->render('panier/edit.html.twig', [
             'panier' => $panier,
             'form' => $form,
         ]);

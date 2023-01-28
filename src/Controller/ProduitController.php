@@ -58,7 +58,7 @@ class ProduitController extends AbstractController
             return $this->redirectToRoute('app_produit_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('produit/new.html.twig', [
+        return $this->render('produit/new.html.twig', [
             'produit' => $produit,
             'form' => $form,
         ]);
@@ -72,8 +72,8 @@ class ProduitController extends AbstractController
             return $this->redirectToRoute('app_produit_index');
         } else {
             $user = $this->getUser();
+            $form = $this->createForm(ContenueType::class);
             if ($user) {
-
                 $panner = $em->getRepository(Panier::class)->findOneBy(['user' => $user, 'etat' => false]);
                 if (!$panner) {
                     $panner = new Panier();
@@ -97,17 +97,14 @@ class ProduitController extends AbstractController
                     $em->flush();
                     $this->addFlash('success', $translator->trans('flash.add_to_card'));
                 }
-
-                return $this->render('produit/show.html.twig', [
-                    'produit' => $produit,
-                    'form' => $form,
-                ]);
             }
             return $this->render('produit/show.html.twig', [
                 'produit' => $produit,
+                'form' => $form,
             ]);
         }
     }
+
 
     #[Route('/produit/admin/{id}/edit', name: 'app_produit_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Produit $produit, ProduitRepository $produitRepository, TranslatorInterface $translator): Response
@@ -140,13 +137,13 @@ class ProduitController extends AbstractController
             return $this->redirectToRoute('app_produit_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('produit/edit.html.twig', [
+        return $this->render('produit/edit.html.twig', [
             'produit' => $produit,
             'form' => $form,
         ]);
     }
 
-    #[Route('/produit/admin/delete/{id}', name: 'app_produit_delete', methods: ['POST'])]
+    #[Route('/produit/admin/delete/{id}', name: 'app_produit_delete', methods: ['GET', 'POST'])]
     public function delete(Request $request, Produit $produit, ProduitRepository $produitRepository, TranslatorInterface $translator): Response
     {
         if ($this->isCsrfTokenValid('delete' . $produit->getId(), $request->request->get('_token'))) {
