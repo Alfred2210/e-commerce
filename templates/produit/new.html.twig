@@ -5,9 +5,9 @@
 {% endblock %}
 
 {% block body %}
-  <h1>Create new Product</h1>
+  <h1>{{ 'produit.create'|trans }}</h1>
 
   {{ include('produit/_form.html.twig') }}
 
-  <a href="{{ path('app_produit_index') }}">back to list</a>
+  <a href="{{ path('app_produit_index') }}" class="btn btn-warning">{{ 'link.back'|trans }}</a>
 {% endblock %}

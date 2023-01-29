@@ -1,6 +1,6 @@
 produit:
   title: Product
-  create: Create new Produit
+  create: Create new Product
   add_to_panner: Add to cart
 
 panier:
@@ -11,7 +11,7 @@ panier:
 user:
   title: User
   name: Name
-  last_name: LastName
+  last_name: Last Name
   email: Email
 
 header:
@@ -33,6 +33,7 @@ table:
   picture: Picture
   action: Action
   no_record: No records found
+  status: Status
 
 admin:
   edit: Edit
@@ -46,3 +47,18 @@ flash:
   add_to_card: Product add to card!
   buy: Payed!
   cant: Not authorized!
+
+login:
+  sign: Log in to your account
+  password: Password
+  connect: Log in
+
+link:
+  back: Back to List
+
+register:
+  inscription: Register
+  register: Register
+
+form:
+  agree: Agree Terms
