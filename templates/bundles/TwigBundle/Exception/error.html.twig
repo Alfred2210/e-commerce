@@ -1,5 +1,84 @@
-{% extends 'base.html.twig' %}
+{# {% extends 'base.html.twig' %}
+
+{% block title %}
+  Erreur 403
+{% endblock %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  <style>
+    .error-container {
+      text-align: center;
+      margin: 10% auto;
+      padding: 3em;
+      background-color: #f2dede;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #aaa;
+    }
+    h2 {
+      color: #a94442;
+      margin-bottom: 1em;
+    }
+    
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      border-radius: 20px;
+      background-color: #3498db;
+      color: #fff;
+      text-decoration: none;
+      margin-top: 20px;
+    }
+  </style>
+{% endblock %}
 
 {% block body %}
-  <h2>une erreur est survenue</h2>
+  <div class="error-container">
+    <h2>Une erreur est survenue</h2>
+    <p>Une erreur inconnue est survenue et votre demande ne peut pas être traitée pour le moment.</p>
+    <a href="{{ path('app_produit_index') }}" class="btn">Retour à l'accueil</a>
+  </div>
+{% endblock %} #}
+{% extends 'base.html.twig' %}
+
+{% block title %}
+  Erreur
+{% endblock %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  <style>
+    .error-container {
+      height: calc(100vh - 60px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    h2 {
+      font-size: 36px;
+      color: #333;
+      margin-bottom: 1em;
+    }
+    p {
+      font-size: 18px;
+      color: #555;
+      margin-bottom: 2em;
+    }
+    .btn {
+      padding: 10px 20px;
+      border-radius: 20px;
+      background-color: #3498db;
+      color: #fff;
+      text-decoration: none;
+    }
+  </style>
+{% endblock %}
+
+{% block body %}
+  <div class="error-container">
+    <h2>Une erreur est survenue</h2>
+    <p>Une erreur inconnue est survenue et votre demande ne peut pas être traitée pour le moment.</p>
+    <a href="{{ path('app_produit_index') }}" class="btn">Retour à l'accueil</a>
+  </div>
 {% endblock %}
