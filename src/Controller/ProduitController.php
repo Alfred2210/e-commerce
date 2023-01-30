@@ -17,6 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 
+#[Route('{_locale}')]
 class ProduitController extends AbstractController
 {
     #[Route('/', name: 'app_produit_index', methods: ['GET'])]
@@ -143,7 +144,7 @@ class ProduitController extends AbstractController
         ]);
     }
 
-    #[Route('/produit/admin/delete/{id}', name: 'app_produit_delete', methods: ['GET', 'POST'])]
+    #[Route('/produit/admin/delete/{id}', name: 'app_produit_delete', methods: ['POST'])]
     public function delete(Request $request, Produit $produit, ProduitRepository $produitRepository, TranslatorInterface $translator): Response
     {
         if ($this->isCsrfTokenValid('delete' . $produit->getId(), $request->request->get('_token'))) {

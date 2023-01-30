@@ -64,12 +64,13 @@
     <header>
       <nav>
         <a class="navbar-brand" href="{{ path('app_produit_index') }}"><h1>Device Delight</h1></a>
+      </nav>
+      <nav>
         {% if is_granted('ROLE_MODERATOR') %}
           <a class="nav-link" href="{{ path('app_moderator') }}">{{ 'header.admin'|trans }}</a>
         {% endif %}
-      </nav>
-      <nav>
         {% if is_granted('ROLE_USER') %}
+          <a class="nav-link" href="{{ path('app_produit_index') }}">{{ 'header.prod'|trans }}</a>
           <a class="nav-link" href="{{ path('app_panier_index') }}">{{ 'header.panner'|trans }}</a>
           <a class="nav-link" href="{{ path('app_user') }}">{{ 'header.user'|trans }}</a>
           <a class="nav-link" href="{{ path('app_logout') }}">{{ 'header.logout'|trans }}</a>

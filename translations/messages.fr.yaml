@@ -1,6 +1,6 @@
 produit:
   title: Produit
-  create: Produit crée
+  create: Créer un nouveau produit
   add_to_panner: ajouter au panier
 
 panier:
@@ -15,7 +15,7 @@ user:
   email: Email
 
 header:
-  login: LogIn
+  login: Connexion
   logout: LogOut
   register: Inscription
   prod: Produit
@@ -33,6 +33,7 @@ table:
   picture: Photo
   action: Action
   no_record: non enregistrée
+  status: Etat
 
 admin:
   edit: Edit
@@ -46,3 +47,18 @@ flash:
   add_to_card: ajout dans le panier!
   buy: Payer !
   cant: Non Autorise !
+
+login:
+  sign: Connexion au compte
+  password: Mot de passe
+  connect: Connexion
+
+link:
+  back: Retour
+
+register:
+  inscription: Inscrivez-vous
+  register: Je m'inscris
+
+form:
+  agree: Je suis d'accord

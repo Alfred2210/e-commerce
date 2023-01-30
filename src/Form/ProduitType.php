@@ -33,7 +33,7 @@ class ProduitType extends AbstractType
                         'mimeTypesMessage' => 'Seuls les jpg, jpeg et png sont autorisés',
                     ])
                 ],
-            ])        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

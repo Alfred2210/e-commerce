@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-{{ 'produit.title'|trans }}
+  {{ 'produit.title'|trans }}
 {% endblock %}
 
 {% block body %}
@@ -15,21 +15,11 @@
   <table class="table">
     <thead>
       <tr>
-        <th>
-          {{ 'table.name'|trans }}
-        </th>
-        <th>
-          {{ 'table.desc'|trans }}
-        </th>
-        <th>
-          {{ 'table.price'|trans }}
-        </th>
-        <th>
-          {{ 'table.stock'|trans }}
-        </th>
-        <th>
-          {{ 'table.picture'|trans }}
-        </th>
+        <th>{{ 'table.name'|trans }}</th>
+        <th>{{ 'table.desc'|trans }}</th>
+        <th>{{ 'table.price'|trans }}</th>
+        <th>{{ 'table.stock'|trans }}</th>
+        <th>{{ 'table.picture'|trans }}</th>
       </tr>
     </thead>
     <tbody>
@@ -48,15 +38,13 @@
         </tr>
       {% else %}
         <tr>
-          <td colspan="7">
-            {{ 'table.no_record'|trans }}
-          </td>
+          <td colspan="7">{{ 'table.no_record'|trans }}</td>
         </tr>
       {% endfor %}
     </tbody>
   </table>
 
   {% if is_granted('ROLE_ADMIN') %}
-    <a href="{{ path('app_produit_new') }}">Create new</a>
+    <a href="{{ path('app_produit_new') }}" class="btn btn-warning">{{ 'produit.create'|trans }}</a>
   {% endif %}
 {% endblock %}
