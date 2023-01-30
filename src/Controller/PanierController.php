@@ -24,7 +24,7 @@ class PanierController extends AbstractController
         if (in_array('ROLE_MODERATOR', $user->getRoles())) {
 
             return $this->render('panier/index.html.twig', [
-                'paniers' => $panierRepository->findAll(),
+                'paniers' => $panierRepository->findBy(['etat' => false]),
             ]);
         } else {
             $panier = $panierRepository->findOneBy(['user' => $user, 'etat' => false]);

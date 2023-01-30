@@ -21,7 +21,7 @@ header:
   prod: Produit
   panner: Panier
   user: Utilisateur
-  admin: Super Admin
+  admin: Admin
 
 table:
   name: Nom
