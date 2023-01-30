@@ -20,10 +20,15 @@ class UserController extends AbstractController
     {
         $user = $this->getUser();
         $form = $this->createForm(EditUserType::class, $user);
+
+        $panier = $em->getRepository(Panier::class)->findBy(['user' => $this->getUser()]);
+        foreach ($panier as $unit){
+            $unit->setPrix();
+        }
         return $this->render('user/index.html.twig', [
             'form' => $form,
             'user' => $this->getUser(),
-            'paniers' => $em->getRepository(Panier::class)->findBy(['user' => $this->getUser()])
+            'paniers' => $panier,
         ]);
     }
 

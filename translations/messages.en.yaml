@@ -34,6 +34,7 @@ table:
   action: Action
   no_record: No records found
   status: Status
+  commande: Purchase
 
 admin:
   edit: Edit

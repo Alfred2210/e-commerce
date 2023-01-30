@@ -1,6 +1,6 @@
 produit:
   title: Produit
-  create: Créer un nouveau produit
+  create: Ajouter un produit
   add_to_panner: ajouter au panier
 
 panier:
@@ -34,6 +34,7 @@ table:
   action: Action
   no_record: non enregistrée
   status: Etat
+  commande: Commandé
 
 admin:
   edit: Edit

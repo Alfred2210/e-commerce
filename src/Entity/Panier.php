@@ -30,6 +30,8 @@ class Panier
     #[ORM\OneToMany(mappedBy: 'panier', targetEntity: ContenuPanier::class, orphanRemoval: true)]
     private Collection $contenuPaniers;
 
+    private ?float $prix = null;
+
     public function __construct()
     {
         $this->contenuPaniers = new ArrayCollection();
@@ -72,6 +74,7 @@ class Panier
     public function setEtat(bool $etat): self
     {
         $this->etat = $etat;
+        $this->setPrix();
 
         return $this;
     }
@@ -105,4 +108,26 @@ class Panier
 
         return $this;
     }
+
+    /**
+     * @return int|null
+     */
+    public function getPrix(): ?int
+    {
+        return $this->prix;
+    }
+
+    /**
+     * @param int|null $prix
+     */
+    public function setPrix(): void
+    {
+        $totPrice = 0;
+        foreach ($this->getContenuPaniers() as $produit){
+                $totPrice += ($produit->getQuantite() * $produit->getProduit()->getPrix());
+            }
+        $this->prix = $totPrice;
+    }
+
+
 }

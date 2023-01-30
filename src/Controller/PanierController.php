@@ -128,6 +128,7 @@ class PanierController extends AbstractController
             return $this->redirectToRoute('app_panier_show', ['id' => $panner->getId()]);
         } else {
             $panner->setEtat(true);
+            $panner->setDate(new \DateTime());
             $em->persist($panner);
             $em->flush();
             $this->addFlash('success', $translator->trans('flash.buy'));
