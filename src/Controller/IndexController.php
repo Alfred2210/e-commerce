@@ -8,6 +8,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class IndexController extends AbstractController
 {
+//    Page qui permet de rediriger automatiquement l'utilisateur lors de sa première connexion
+//      Et lui attribue une langue de base
     #[Route('/', name: 'app_index')]
     public function index(): Response
     {

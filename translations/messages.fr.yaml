@@ -32,9 +32,11 @@ table:
   stock: Stock
   picture: Photo
   action: Action
-  no_record: non enregistrée
   status: Etat
   commande: Commandé
+  modif: Dernière modification
+  user: Utilisateur
+  no_record: Aucune donnée
 
 admin:
   edit: Edit

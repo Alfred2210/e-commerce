@@ -19,15 +19,19 @@ class PanierController extends AbstractController
     #[Route('/', name: 'app_panier_index', methods: ['GET'])]
     public function index(PanierRepository $panierRepository, EntityManagerInterface $em): Response
     {
+//        On verifie si l'utilisateur est bien connecter'
         $this->denyAccessUnlessGranted('ROLE_USER');
         $user = $this->getUser();
+//        Si l'utilisateur est Super Admin on affiche tout les panier non acheter
         if (in_array('ROLE_MODERATOR', $user->getRoles())) {
 
             return $this->render('panier/index.html.twig', [
                 'paniers' => $panierRepository->findBy(['etat' => false]),
             ]);
         } else {
+//            Sinon on recupere le dernier panier avec l etat false de l utilisateur
             $panier = $panierRepository->findOneBy(['user' => $user, 'etat' => false]);
+//            Si il n'en possède pas on lui ne créer un'
             if (!$panier) {
                 $panier = new Panier();
                 $panier->setUser($this->getUser())
@@ -36,82 +40,40 @@ class PanierController extends AbstractController
                 $em->persist($panier);
                 $em->flush();
             }
+//            Puis on affiche son pannier
             return $this->render('panier/show.html.twig', [
                 'panier' => $panier,
             ]);
         }
     }
-
-    #[Route('/new', name: 'app_panier_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, PanierRepository $panierRepository): Response
-    {
-        $panier = new Panier();
-        $form = $this->createForm(PanierType::class, $panier);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $panierRepository->save($panier, true);
-
-            return $this->redirectToRoute('app_panier_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('panier/new.html.twig', [
-            'panier' => $panier,
-            'form' => $form,
-        ]);
-    }
-
     #[Route('/{id}', name: 'app_panier_show', methods: ['GET'])]
     public function show(Panier $panier, TranslatorInterface $translator): Response
     {
+//        Si l Utilisateur est connecter
         $this->denyAccessUnlessGranted('ROLE_USER');
 
         $user = $this->getUser();
+//        Si le panier apartien a l user ou si l User est SuperAdmin on lui affiche le panier grace a son ID
         if ($user === $panier->getUser() || in_array('ROLE_MODERATOR', $user->getRoles())) {
             return $this->render('panier/show.html.twig', [
                 'panier' => $panier,
             ]);
         } else {
+//            Sinon on le redirige vers la page d aceuille avec un message flash
             $this->addFlash('warning', $translator->trans('flash.cant'));
             return $this->redirectToRoute('app_produit_index');
         }
     }
-
-    #[Route('{id}/edit', name: 'app_panier_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Panier $panier, PanierRepository $panierRepository): Response
-    {
-        $form = $this->createForm(PanierType::class, $panier);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $panierRepository->save($panier, true);
-
-            return $this->redirectToRoute('app_panier_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('panier/edit.html.twig', [
-            'panier' => $panier,
-            'form' => $form,
-        ]);
-    }
-
-    #[Route('/{id}', name: 'app_panier_delete', methods: ['POST'])]
-    public function delete(Request $request, Panier $panier, PanierRepository $panierRepository): Response
-    {
-        if ($this->isCsrfTokenValid('delete' . $panier->getId(), $request->request->get('_token'))) {
-            $panierRepository->remove($panier, true);
-        }
-
-        return $this->redirectToRoute('app_panier_index', [], Response::HTTP_SEE_OTHER);
-    }
-
     #[Route('line/{id}', name: 'app_panier_remove_line')]
     public function removeLigne(ContenuPanier $contenu, EntityManagerInterface $em, Request $r, TranslatorInterface $translator)
     {
+//        On verifie si le panier appartien a l user
         if ($contenu->getPanier()->getUser() !== $this->getUser()) {
+//            Si Non on redirige vers une page et on affiche un msg flash
             $this->addFlash('warning', $translator->trans('flash.cant'));
             return $this->redirectToRoute('app_panier_show', ['id' => $contenu->getPanier()->getId()]);
         } else {
+//            Si Oui On SUpprime la ligne
             $em->remove($contenu);
             $em->flush();
             $this->addFlash('warning', $translator->trans('flash.remove_prod'));
@@ -123,10 +85,13 @@ class PanierController extends AbstractController
     #[Route('valid/{id}', name: 'app_panier_valid')]
     public function validPanier(Panier $panner, EntityManagerInterface $em, Request $r, TranslatorInterface $translator)
     {
+//        On verifie si le panier appartien a l User
         if ($panner->getUser() !== $this->getUser()) {
+//            Si Non on redirige vers une autre page et on affiche un msg flash
             $this->addFlash('warning', $translator->trans('flash.cant'));
             return $this->redirectToRoute('app_panier_show', ['id' => $panner->getId()]);
         } else {
+<<<<<<< HEAD
             $contenus = $em->getRepository(ContenuPanier::class)->findBy(['panier' => $panner]);
 
             // Vérifier si toutes les commandes ont été effectuées
@@ -139,6 +104,9 @@ class PanierController extends AbstractController
             }
 
             // Mets à jour l'état de la commande et le stock des produits
+=======
+//            Si Oui on valid le panier
+>>>>>>> 9d526a9a449da99ba29d457e65d3f640bdab7527
             $panner->setEtat(true);
             $panner->setDate(new \DateTime());
             $em->persist($panner);
