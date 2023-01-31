@@ -2,10 +2,10 @@
   <thead>
     <tr>
       <th>ID</th>
-      <th>Prix</th>
-      <th>Dernière modification</th>
+      <th>{{ 'table.price'|trans }}</th>
+      <th>{{ 'table.modif'|trans }}</th>
       <th>{{ 'table.commande'|trans }}</th>
-      <th>actions</th>
+      <th>Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -21,7 +21,7 @@
       </tr>
     {% else %}
       <tr>
-        <td colspan="4">no records found</td>
+        <td colspan="4">{{ 'table.no_record'|trans }}</td>
       </tr>
     {% endfor %}
   </tbody>

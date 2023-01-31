@@ -32,9 +32,11 @@ table:
   stock: Stock
   picture: Picture
   action: Action
-  no_record: No records found
   status: Status
   commande: Purchase
+  modif: Last modif
+  user: User
+  no_record: No records found
 
 admin:
   edit: Edit

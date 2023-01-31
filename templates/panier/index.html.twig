@@ -1,17 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Panier index{% endblock %}
+{% block title %}{{ 'panier.title' }}{% endblock %}
 
 {% block body %}
-    <h1>Panier index</h1>
+    <h1>{{ 'panier.title' }}</h1>
 
     <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Utilisateur</th>
-                <th>Dernière modification</th>
-                <th>actions</th>
+                <th>{{ 'table.user'|trans }}</th>
+                <th>{{ 'table.modif'|trans }}</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -27,7 +27,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="4">no records found</td>
+                <td colspan="4">{{ 'table.no_record'|trans }}</td>
             </tr>
         {% endfor %}
         </tbody>

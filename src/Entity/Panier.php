@@ -122,6 +122,7 @@ class Panier
      */
     public function setPrix(): void
     {
+//        Permet de definir le prix total du panier
         $totPrice = 0;
         foreach ($this->getContenuPaniers() as $produit){
                 $totPrice += ($produit->getQuantite() * $produit->getProduit()->getPrix());
