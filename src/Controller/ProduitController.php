@@ -94,6 +94,13 @@ class ProduitController extends AbstractController
                 $form = $this->createForm(ContenueType::class, $list);
                 $form->handleRequest($r);
                 if ($form->isSubmitted() && $form->isValid()) {
+                    if ($produit->getStock() >= $list->getQuantite()) {
+                        $produit->setStock($produit->getStock() - $list->getQuantite());
+                        $em->persist($produit);
+                    } else {
+                        $this->addFlash('warning', $translator->trans('Plus de stock'));
+                        return $this->redirectToRoute('app_produit_show', ['id' => $produit->getId()]);
+                    }
                     $em->persist($list);
                     $em->flush();
                     $this->addFlash('success', $translator->trans('flash.add_to_card'));
