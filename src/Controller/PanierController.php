@@ -127,9 +127,26 @@ class PanierController extends AbstractController
             $this->addFlash('warning', $translator->trans('flash.cant'));
             return $this->redirectToRoute('app_panier_show', ['id' => $panner->getId()]);
         } else {
+            $contenus = $em->getRepository(ContenuPanier::class)->findBy(['panier' => $panner]);
+
+            // Vérifier si toutes les commandes ont été effectuées
+            foreach ($contenus as $contenu) {
+                $produit = $contenu->getProduit();
+                if ($produit->getStock() < $contenu->getQuantite()) {
+                    $this->addFlash('warning', $translator->trans('flash.not_available'));
+                    return $this->redirectToRoute('app_panier_show', ['id' => $panner->getId()]);
+                }
+            }
+
+            // Mets à jour l'état de la commande et le stock des produits
             $panner->setEtat(true);
             $panner->setDate(new \DateTime());
             $em->persist($panner);
+            foreach ($contenus as $contenu) {
+                $produit = $contenu->getProduit();
+                $produit->setStock($produit->getStock() - $contenu->getQuantite());
+                $em->persist($produit);
+            }
             $em->flush();
             $this->addFlash('success', $translator->trans('flash.buy'));
 

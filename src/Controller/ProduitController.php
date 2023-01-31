@@ -85,6 +85,8 @@ class ProduitController extends AbstractController
                     $em->flush();
                 }
                 $list = $em->getRepository(ContenuPanier::class)->findOneBy(['panier' => $panner, 'produit' => $produit]);
+
+
                 if (!$list) {
                     $list = new ContenuPanier();
                     $list->setDate(new \DateTime())
@@ -93,13 +95,20 @@ class ProduitController extends AbstractController
                 }
                 $form = $this->createForm(ContenueType::class, $list);
                 $form->handleRequest($r);
+
                 if ($form->isSubmitted() && $form->isValid()) {
-                    if ($produit->getStock() >= $list->getQuantite()) {
-                        $produit->setStock($produit->getStock() - $list->getQuantite());
-                        $em->persist($produit);
-                    } else {
-                        $this->addFlash('warning', $translator->trans('Plus de stock'));
-                        return $this->redirectToRoute('app_produit_show', ['id' => $produit->getId()]);
+                    $commande = $em->getRepository(ContenuPanier::class)->findOneBy(['panier' => $panner]);
+                    if ($commande) {
+
+                        $produit->setStock($produit->getStock() + $commande->getQuantite());
+
+                        if ($produit->getStock() >= $list->getQuantite()) {
+                            $produit->setStock($produit->getStock() - $list->getQuantite());
+                            $em->persist($produit);
+                        } else {
+                            $this->addFlash('warning', $translator->trans('flash.not_available'));
+                            return $this->redirectToRoute('app_produit_show', ['id' => $produit->getId()]);
+                        }
                     }
                     $em->persist($list);
                     $em->flush();
