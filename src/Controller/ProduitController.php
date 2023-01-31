@@ -100,7 +100,7 @@ class ProduitController extends AbstractController
                 $form = $this->createForm(ContenueType::class, $list);
                 $form->handleRequest($r);
                 //                Si le form est valider on modifier/ Ajoute le ContenuPanier au panier
-                if ($form->isSubmitted() && $form->isValid()) {
+                if ($form->isSubmitted() && $form->isValid() && $produit->getStock() > 0) {
                     $commande = $em->getRepository(ContenuPanier::class)->findOneBy(['panier' => $panner]);
                     if ($commande) {
 
