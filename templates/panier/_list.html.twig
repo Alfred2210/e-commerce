@@ -1,9 +1,10 @@
 <table class="table">
   <thead>
     <tr>
-      <th>Id</th>
-      <th>Date</th>
-      <th>{{ 'table.status'|trans }}</th>
+      <th>ID</th>
+      <th>Prix</th>
+      <th>Dernière modification</th>
+      <th>{{ 'table.commande'|trans }}</th>
       <th>actions</th>
     </tr>
   </thead>
@@ -11,11 +12,11 @@
     {% for panier in paniers %}
       <tr>
         <td>{{ panier.id }}</td>
+        <td>{{ panier.prix }}€</td>
         <td>{{ panier.date ? panier.date|date('Y-m-d H:i:s') : '' }}</td>
         <td>{{ panier.etat ? 'Yes' : 'No' }}</td>
         <td>
           <a href="{{ path('app_panier_show', { id: panier.id }) }}">show</a>
-          <a href="{{ path('app_panier_edit', { id: panier.id }) }}">edit</a>
         </td>
       </tr>
     {% else %}

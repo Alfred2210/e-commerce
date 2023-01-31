@@ -39,8 +39,13 @@
     </tbody>
   </table>
 
-  <h3>{{ 'panier.price_panner'|trans({ '%nbr%': totalPrice }) }}</h3>
-  {% if panier.etat == false %}
-    <a href="{{ path('app_panier_valid', { id: panier.id }) }}" class="btn btn-primary">{{ 'panier.commander'|trans }}</a>
-  {% endif %}
+    <h3>
+        {{ 'panier.price_panner'|trans({'%nbr%' : totalPrice}) }}
+    </h3>
+    {% if panier.etat == false %}
+
+        <a href="{{ path('app_panier_valid', {'id' : panier.id}) }}"
+           class="btn btn-primary">{{ 'panier.commander'|trans }}
+        </a>
+    {% endif %}
 {% endblock %}

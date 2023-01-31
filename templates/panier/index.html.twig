@@ -9,8 +9,8 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Date</th>
-                <th>Etat</th>
+                <th>Utilisateur</th>
+                <th>Dernière modification</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -18,8 +18,8 @@
         {% for panier in paniers %}
             <tr>
                 <td>{{ panier.id }}</td>
+                <td>{{ panier.user}}</td>
                 <td>{{ panier.date ? panier.date|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ panier.etat ? 'Yes' : 'No' }}</td>
                 <td>
                     <a href="{{ path('app_panier_show', {'id': panier.id}) }}">show</a>
                     <a href="{{ path('app_panier_edit', {'id': panier.id}) }}">edit</a>
@@ -32,6 +32,4 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('app_panier_new') }}">Create new</a>
 {% endblock %}

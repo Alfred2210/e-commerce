@@ -24,7 +24,7 @@ class PanierController extends AbstractController
         if (in_array('ROLE_MODERATOR', $user->getRoles())) {
 
             return $this->render('panier/index.html.twig', [
-                'paniers' => $panierRepository->findAll(),
+                'paniers' => $panierRepository->findBy(['etat' => false]),
             ]);
         } else {
             $panier = $panierRepository->findOneBy(['user' => $user, 'etat' => false]);
@@ -128,6 +128,7 @@ class PanierController extends AbstractController
             return $this->redirectToRoute('app_panier_show', ['id' => $panner->getId()]);
         } else {
             $panner->setEtat(true);
+            $panner->setDate(new \DateTime());
             $em->persist($panner);
             $em->flush();
             $this->addFlash('success', $translator->trans('flash.buy'));

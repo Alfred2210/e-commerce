@@ -1,50 +1,52 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-  {{ 'produit.title'|trans }}
+    {{ 'produit.title'|trans }}
 {% endblock %}
 
 {% block body %}
-  <style>
-    td img {
-      width: 75px;
-    }
-  </style>
-  <h1>{{ 'produit.title'|trans }}</h1>
+    <style>
+        td img {
+            width: 75px;
+        }
+    </style>
+    <h1>{{ 'produit.title'|trans }}</h1>
 
-  <table class="table">
-    <thead>
-      <tr>
-        <th>{{ 'table.name'|trans }}</th>
-        <th>{{ 'table.desc'|trans }}</th>
-        <th>{{ 'table.price'|trans }}</th>
-        <th>{{ 'table.stock'|trans }}</th>
-        <th>{{ 'table.picture'|trans }}</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for produit in produits %}
+    <table class="table">
+        <thead>
         <tr>
-          <td>
-            <a href="{{ path('app_produit_show', { id: produit.id }) }}">{{ produit.nom }}</a>
-          </td>
-
-          <td>{{ produit.description }}</td>
-          <td>{{ produit.prix }}€</td>
-          <td>{{ produit.stock }}</td>
-          <td>
-            <img src="{{ asset('uploads/' ~ produit.photo) }}" alt="{{ produit.nom }}" />
-          </td>
+            <th>{{ 'table.name'|trans }}</th>
+            <th>{{ 'table.desc'|trans }}</th>
+            <th>{{ 'table.price'|trans }}</th>
+            <th>{{ 'table.stock'|trans }}</th>
+            <th>{{ 'table.picture'|trans }}</th>
         </tr>
-      {% else %}
-        <tr>
-          <td colspan="7">{{ 'table.no_record'|trans }}</td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+        </thead>
+        <tbody>
+        {% for produit in produits %}
+            <tr>
+                <td>
+                    <a href="{{ path('app_produit_show', { id: produit.id }) }}">{{ produit.nom }}</a>
+                </td>
 
-  {% if is_granted('ROLE_ADMIN') %}
-    <a href="{{ path('app_produit_new') }}" class="btn btn-warning">{{ 'produit.create'|trans }}</a>
-  {% endif %}
+                <td>{{ produit.description }}</td>
+                <td>{{ produit.prix }}€</td>
+                <td>{{ produit.stock }}</td>
+                <td>
+                    <img src="{{ asset('uploads/' ~ produit.photo) }}" alt="{{ produit.nom }}"/>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">{{ 'table.no_record'|trans }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="admin_btn_edit">
+            <a href="{{ path('app_produit_new') }}" class="btn btn-warning">{{ 'produit.create'|trans }}</a>
+        </div>
+    {% endif %}
 {% endblock %}
