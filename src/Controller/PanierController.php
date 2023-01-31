@@ -46,6 +46,7 @@ class PanierController extends AbstractController
             ]);
         }
     }
+
     #[Route('/{id}', name: 'app_panier_show', methods: ['GET'])]
     public function show(Panier $panier, TranslatorInterface $translator): Response
     {
@@ -64,6 +65,7 @@ class PanierController extends AbstractController
             return $this->redirectToRoute('app_produit_index');
         }
     }
+
     #[Route('line/{id}', name: 'app_panier_remove_line')]
     public function removeLigne(ContenuPanier $contenu, EntityManagerInterface $em, Request $r, TranslatorInterface $translator)
     {
@@ -91,10 +93,8 @@ class PanierController extends AbstractController
             $this->addFlash('warning', $translator->trans('flash.cant'));
             return $this->redirectToRoute('app_panier_show', ['id' => $panner->getId()]);
         } else {
-<<<<<<< HEAD
-            $contenus = $em->getRepository(ContenuPanier::class)->findBy(['panier' => $panner]);
-
-            // Vérifier si toutes les commandes ont été effectuées
+            $contenus = $panner->getContenuPaniers();
+//            On verifie si les produits sont en stock
             foreach ($contenus as $contenu) {
                 $produit = $contenu->getProduit();
                 if ($produit->getStock() < $contenu->getQuantite()) {
@@ -104,12 +104,10 @@ class PanierController extends AbstractController
             }
 
             // Mets à jour l'état de la commande et le stock des produits
-=======
-//            Si Oui on valid le panier
->>>>>>> 9d526a9a449da99ba29d457e65d3f640bdab7527
             $panner->setEtat(true);
             $panner->setDate(new \DateTime());
             $em->persist($panner);
+
             foreach ($contenus as $contenu) {
                 $produit = $contenu->getProduit();
                 $produit->setStock($produit->getStock() - $contenu->getQuantite());
