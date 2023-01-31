@@ -1,58 +1,46 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ 'panier.title'|trans }}{% endblock %}
+{% block title %}
+  {{ 'panier.title'|trans }}
+{% endblock %}
 
 {% block body %}
-    <h1>{{ 'panier.title'|trans }}</h1>
+  <h1>{{ 'panier.title'|trans }}</h1>
 
-    <table class="table">
-        <thead>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>{{ 'table.name'|trans }}</th>
+        <th>{{ 'table.price'|trans }}</th>
+        <th>{{ 'table.quantity'|trans }}</th>
+        <th>{{ 'table.unit_price'|trans }}</th>
+        <th>{{ 'table.action'|trans }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% set totalPrice = 0 %}
+      {% for ligne in panier.contenuPaniers %}
+        {% set lignePrice = ligne.quantite * ligne.produit.prix %}
+        {% set totalPrice = totalPrice + lignePrice %}
         <tr>
-            <th>
-                {{ 'table.name'|trans }}
-            </th>
-            <th>
-                {{ 'table.price'|trans }}
-            </th>
-            <th>
-                {{ 'table.quantity'|trans }}
-            </th>
-            <th>
-                {{ 'table.unit_price'|trans }}
-            </th>
-            <th>
-                {{ 'table.action'|trans }}
-            </th>
+          <td>{{ ligne.produit.nom }}</td>
+          <td>{{ ligne.produit.prix }}€/u</td>
+          <td>{{ ligne.quantite }}</td>
+          <td>{{ ligne.quantite * ligne.produit.prix }}€</td>
+          <td>
+            <a href="{{ path('app_panier_remove_line', { id: ligne.id }) }}">Remove</a>
+          </td>
         </tr>
-        </thead>
-        <tbody>
-        {% set totalPrice = 0 %}
-        {% for ligne in panier.contenuPaniers %}
-            {% set lignePrice = (ligne.quantite * ligne.produit.prix) %}
-            {% set totalPrice = totalPrice + lignePrice %}
-            <tr>
-                <td>{{ ligne.produit.nom }}</td>
-                <td>{{ ligne.produit.prix }}€/u</td>
-                <td>{{ ligne.quantite }}</td>
-                <td>{{ (ligne.quantite * ligne.produit.prix) }}€</td>
-                <td>
-                    <a href="{{ path('app_panier_remove_line', {'id': ligne.id}) }}">Remove</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+      {% else %}
+        <tr>
+          <td colspan="5">no records found</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 
-    <h3>
-        {{ 'panier.price_panner'|trans({'%nbr%' : totalPrice}) }}
-    </h3>
-    {% if panier.etat == false %}
-
-        <a href="{{ path('app_panier_valid', {'id' : panier.id}) }}"
-           class="btn btn-primary">{{ 'panier.commander'|trans }}</a>
-    {% endif %}
+  <h3>{{ 'panier.price_panner'|trans({ '%nbr%': totalPrice }) }}</h3>
+  {% if panier.etat == false %}
+    <a href="{{ path('app_panier_valid', { id: panier.id }) }}" class="btn btn-primary">{{ 'panier.commander'|trans }}</a>
+  {% endif %}
 {% endblock %}
