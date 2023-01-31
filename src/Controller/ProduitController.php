@@ -109,9 +109,6 @@ class ProduitController extends AbstractController
                         if ($produit->getStock() >= $list->getQuantite()) {
                             $produit->setStock($produit->getStock() - $list->getQuantite());
                             $em->persist($produit);
-                        } else {
-                            $this->addFlash('warning', $translator->trans('flash.not_available'));
-                            return $this->redirectToRoute('app_produit_show', ['id' => $produit->getId()]);
                         }
                     }
                     $em->persist($list);
