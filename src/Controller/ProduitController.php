@@ -37,7 +37,7 @@ class ProduitController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-//            Fonction de l'img
+            //            Fonction de l'img
             $logo = $form->get('photo')->getData();
             if ($logo) {
                 $newFilename = uniqid() . '.' . $logo->guessExtension();
@@ -69,16 +69,16 @@ class ProduitController extends AbstractController
     #[Route('/produit/{id}', name: 'app_produit_show')]
     public function show(Produit $produit = null, EntityManagerInterface $em, Request $r, TranslatorInterface $translator): Response
     {
-//        Si Produit = null on redirige l User
+        //        Si Produit = null on redirige l User
         if ($produit === null) {
             $this->addFlash('warning', $translator->trans('flash.cant'));
             return $this->redirectToRoute('app_produit_index');
         } else {
-//            Sinon on verifie que l User est connecter
+            //            Sinon on verifie que l User est connecter
             $user = $this->getUser();
             $form = $this->createForm(ContenueType::class);
             if ($user) {
-//                Si Oui on recupère / creer son panier actuel
+                //                Si Oui on recupère / creer son panier actuel
                 $panner = $em->getRepository(Panier::class)->findOneBy(['user' => $user, 'etat' => false]);
                 if (!$panner) {
                     $panner = new Panier();
@@ -99,11 +99,7 @@ class ProduitController extends AbstractController
                 }
                 $form = $this->createForm(ContenueType::class, $list);
                 $form->handleRequest($r);
-<<<<<<< HEAD
-
-=======
-//                Si le form est valider on modifier/ Ajoute le COntenuPanier au panier
->>>>>>> 9d526a9a449da99ba29d457e65d3f640bdab7527
+                //                Si le form est valider on modifier/ Ajoute le ContenuPanier au panier
                 if ($form->isSubmitted() && $form->isValid()) {
                     $commande = $em->getRepository(ContenuPanier::class)->findOneBy(['panier' => $panner]);
                     if ($commande) {
